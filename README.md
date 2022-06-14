@@ -1,3 +1,8 @@
+# react-tenzies-game
+Tenzies game: roll dice, "freeze" the ones with the same value/number until all dice are frozen
+
+React with minimal styling
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
