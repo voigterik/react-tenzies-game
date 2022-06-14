@@ -1,0 +1,30 @@
+.b-die {
+  display: grid;
+  place-content: center;
+  width: 3rem;
+  height: 3rem;
+  padding: 1rem;
+  font-size: 1.8rem;
+  background: #FFF;
+  border-radius: 5px;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.5);
+  transition: all 0.225s ease-in-out;
+}
+.b-die:hover {
+  cursor: pointer;
+}
+.b-die.m-active {
+  background: #59E391;
+  animation: bob 0.2s ease-in-out;
+}
+@keyframes bob {
+  0% {
+    transform: translateY(0.5rem);
+  }
+  50% {
+    transform: translateY(0.25rem);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
