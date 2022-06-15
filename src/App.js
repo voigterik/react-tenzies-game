@@ -9,7 +9,9 @@ export default function App() {
     const [time, setTime] = useState(0);
     const [record, setRecord] = useState(1000);
     const [storageRecord, setStorageRecord] = useState({});
-    
+
+    const [recordTime, recordRound] =  Object.values(JSON.parse(localStorage.getItem("TenziesRecord")));
+
     useEffect(() => {        
         const allHeld = dice.every(die => die.isHeld);
         const userSelectedValue = dice[0].value;
@@ -116,11 +118,11 @@ export default function App() {
                         </div>
                         <div className="e-record">
                             {
-                                storageRecord.recordTime && <>
+                                recordTime && <>
                                      <h3 className="e-section-title">Current record</h3>
-                                    Time needed: {storageRecord.recordTime}s   
+                                    Time needed: {recordTime}s   
                                     <br />
-                                    Rounds needed: {storageRecord.recordRounds}  
+                                    Rounds needed: {recordRound}  
                                 </>
                             }
                                                    
