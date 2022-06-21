@@ -7,16 +7,26 @@ export default function App() {
     const [tenzies, setTenzies] = useState(false);
     const [rounds, setRounds] = useState(0);
     const [time, setTime] = useState(0);
-    const [record, setRecord] = useState(1000);
-    const [storageRecord, setStorageRecord] = useState({});
+    const [recordTime, setRecordTime] = useState(null);
+    const [recordRounds, setRecordRounds] = useState(null);
+    const [storageRecord, setStorageRecord] = useState();
+    
+    const gameName = "TenziesRecord";
 
-    const [recordTime, recordRound] =  Object.values(JSON.parse(localStorage.getItem("TenziesRecord")));
+    // check if Tenzies exists in local storage and create if not
+    // then destruct current records
+    Object.keys(localStorage).map(name => {
+        if(gameName !== name) {
+            localStorage.setItem(gameName, JSON.stringify({recordTime: recordTime, recordRounds: recordRounds}));
+        } 
+    });
 
     useEffect(() => {        
         const allHeld = dice.every(die => die.isHeld);
         const userSelectedValue = dice[0].value;
         const matchAll = dice.every(die => die.value === userSelectedValue);
-
+        
+        // when all dice match - game ends
         if(allHeld && matchAll) {
             setTenzies(true);
         }
@@ -24,15 +34,16 @@ export default function App() {
         // save record if lowest time to complete
         // reset game parameters
         if(tenzies) {            
-            if(time < record) {
-                setRecord(time);
-                setStorageRecord(localStorage.setItem("TenziesRecord", JSON.stringify({recordTime: time, recordRounds: rounds})));             
+            if(time < recordTime || recordTime === null) {
+
+                setRecordTime(time);
+                setRecordRounds(rounds); 
+                setStorageRecord(localStorage.setItem(gameName, JSON.stringify({recordTime: recordTime, recordRounds: recordRounds})));
             }
             setTenzies(false);
             setDice(allDice);
             setRounds(0);
             setTime(0);   
-
         }
     }, [dice]);
 
@@ -90,7 +101,7 @@ export default function App() {
     return(
         <main className="b-app">
             <h1>Tenzies</h1>
-            <p>Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
+            <p>Roll until all dice show the same number. Click each die to "freeze" it at its current value between rolls.</p>
             <div className="e-container">
                 
                 {tenzies && <h2 className="e-heading">WINNER WINNER CHICKEN DINNER!</h2>}
@@ -117,18 +128,13 @@ export default function App() {
                             Rounds needed: {rounds}
                         </div>
                         <div className="e-record">
-                            {
-                                recordTime && <>
-                                     <h3 className="e-section-title">Current record</h3>
-                                    Time needed: {recordTime}s   
-                                    <br />
-                                    Rounds needed: {recordRound}  
-                                </>
-                            }
-                                                   
+                            <h3 className="e-section-title">Current record</h3>
+                                Time needed: {recordTime}s   
+                                <br />
+                                Rounds needed: {recordRounds} 
                         </div>                        
                     </div>   
-                }                                                   
+                }                                                 
             </div>
         </main>
     );
